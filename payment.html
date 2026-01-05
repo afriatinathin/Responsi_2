@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - LIVERA</title>
+
+    <style>
+      :root {
+        --primary: #c07a3a;
+        --bg: #f6f4f2;
+        --card: #fff;
+        --muted: #6f6f6f;
+        --line: #ece6dd;
+        --shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+        --radius: 22px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+      }
+      .wrap {
+        max-width: 980px;
+        margin: auto;
+        padding: 18px 16px 120px;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+      .topbar .inner {
+        max-width: 980px;
+        margin: auto;
+        padding: 14px 16px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      .back {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 18px;
+        margin: 14px 0;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+      }
+
+      .prod {
+        display: grid;
+        grid-template-columns: 64px 1fr auto;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .prod img {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        object-fit: cover;
+      }
+
+      /* PAYMENT */
+      .payOpt {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 14px;
+        margin-top: 12px;
+      }
+      .methodHead {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .subopts {
+        display: none;
+        margin-top: 12px;
+      }
+      .subopts.active {
+        display: block;
+      }
+
+      .choice {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 12px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+
+      .bottomBar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        border-top: 1px solid var(--line);
+      }
+      .bottomBar .inner {
+        max-width: 980px;
+        margin: auto;
+        padding: 14px 16px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        border: none;
+        cursor: pointer;
+        padding: 12px 22px;
+        border-radius: 999px;
+        font-weight: 900;
+      }
+      .btn.primary {
+        background: var(--primary);
+        color: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="inner">
+        <a class="back" href="pelanggan.html">←</a>
+        <b>Checkout</b>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <!-- ALAMAT -->
+      <!-- ALAMAT -->
+      <div class="card">
+        <h3>Alamat Pengiriman</h3>
+
+        <div class="row2">
+          <input class="input" id="shipName" placeholder="Nama Lengkap" />
+
+          <input class="input" id="shipPhone" placeholder="Nomor Telepon" />
+        </div>
+
+        <textarea
+          class="input"
+          id="shipAddress"
+          placeholder="Alamat Lengkap (Nama jalan, RT/RW, Kelurahan, Kecamatan, Kota)"
+          style="margin-top: 10px"
+        ></textarea>
+      </div>
+
+      <!-- PRODUK -->
+      <div class="card">
+        <h3>Produk Dibeli</h3>
+        <div id="productList"></div>
+      </div>
+
+      <!-- METODE PEMBAYARAN -->
+      <div class="card">
+        <h3>Metode Pembayaran</h3>
+
+        <!-- E-WALLET -->
+        <div class="payOpt">
+          <label class="methodHead">
+            <input type="radio" name="method" value="ewallet" checked />
+            E-Wallet
+          </label>
+          <div class="subopts active" data-for="ewallet">
+            <label class="choice">
+              OVO <input type="radio" name="detail" value="OVO" checked />
+            </label>
+            <label class="choice">
+              DANA <input type="radio" name="detail" value="DANA" />
+            </label>
+            <label class="choice">
+              GoPay <input type="radio" name="detail" value="GoPay" />
+            </label>
+          </div>
+        </div>
+
+        <!-- BANK -->
+        <div class="payOpt">
+          <label class="methodHead">
+            <input type="radio" name="method" value="bank" />
+            Transfer Bank
+          </label>
+          <div class="subopts" data-for="bank">
+            <label class="choice">
+              BCA <input type="radio" name="detail" value="BCA" />
+            </label>
+            <label class="choice">
+              BNI <input type="radio" name="detail" value="BNI" />
+            </label>
+            <label class="choice">
+              BRI <input type="radio" name="detail" value="BRI" />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- RINCIAN -->
+      <div class="card">
+        <h3>Rincian Pembayaran</h3>
+        <div style="display: flex; justify-content: space-between">
+          <span class="muted">Subtotal</span>
+          <b id="subtotal">Rp 0</b>
+        </div>
+        <div style="display: flex; justify-content: space-between">
+          <span class="muted">Ongkir</span>
+          <b>Gratis</b>
+        </div>
+        <hr />
+        <div
+          style="display: flex; justify-content: space-between; font-size: 18px"
+        >
+          <b>Total</b>
+          <b id="total">Rp 0</b>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="bottomBar">
+      <div class="inner">
+        <button class="btn primary" onclick="confirmPayment()">
+          Konfirmasi & Bayar
+        </button>
+      </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="data.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const cart = JSON.parse(localStorage.getItem("livera_cart")) || {};
+        const user = JSON.parse(localStorage.getItem("livera_user"));
+
+        const productList = document.getElementById("productList");
+        const subtotalEl = document.getElementById("subtotal");
+        const totalEl = document.getElementById("total");
+
+        let subtotal = 0;
+
+        if (user) {
+          shipName.value = user.nama || "";
+          shipPhone.value = "08xxxxxxxxxx";
+          shipAddress.value = "Jl. Contoh No.123, Jakarta";
+        }
+
+        if (Object.keys(cart).length === 0) {
+          productList.innerHTML = "<p class='muted'>Keranjang kosong.</p>";
+          return;
+        }
+
+        Object.keys(cart).forEach((id) => {
+          const p = products.find((x) => String(x.id) === String(id));
+          if (!p) return;
+
+          const qty = cart[id];
+          subtotal += p.price * qty;
+
+          productList.innerHTML += `
+            <div class="prod">
+              <img src="${p.img}">
+              <div>
+                <b>${p.name}</b>
+                <div class="muted">${rupiah(p.price)}</div>
+              </div>
+              <b>x${qty}</b>
+            </div>
+          `;
+        });
+
+        subtotalEl.textContent = rupiah(subtotal);
+        totalEl.textContent = rupiah(subtotal);
+
+        // toggle metode
+        document.querySelectorAll('input[name="method"]').forEach((r) => {
+          r.addEventListener("change", () => {
+            document.querySelectorAll(".subopts").forEach((p) => {
+              p.classList.toggle("active", p.dataset.for === r.value);
+            });
+          });
+        });
+
+        window.confirmPayment = function () {
+          const method = document.querySelector(
+            'input[name="method"]:checked'
+          ).value;
+          const detail = document.querySelector(
+            'input[name="detail"]:checked'
+          )?.value;
+
+          const order = {
+            user: {
+              nama:
+                document.getElementById("shipName").value.trim() ||
+                "Pelanggan LIVERA",
+              phone: document.getElementById("shipPhone").value.trim(),
+              address: document.getElementById("shipAddress").value.trim(),
+            },
+            items: cart,
+            total: subtotal,
+            payment: { method, detail },
+            status: "paid",
+            time: new Date().toISOString(),
+          };
+
+          localStorage.setItem("livera_order", JSON.stringify(order));
+          localStorage.removeItem("livera_cart");
+
+          window.location.href = "payment_proses.html";
+        };
+      });
+    </script>
+  </body>
+</html>

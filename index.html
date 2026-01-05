@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LIVERA | Smart Living Solutions</title>
+
+    <!-- CSS DIPANGGIL UTUH -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="logo">
+        <img src="logo_LIVERA.png" alt="LIVERA" />
+      </div>
+      <div class="nav-menu">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#login">Masuk & Daftar</a>
+      </div>
+    </div>
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1>Selamat Datang di LIVERA</h1>
+        <p>Smart Living Solutions</p>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <h2>Tentang LIVERA</h2>
+      <p>
+        LIVERA adalah toko peralatan rumah tangga yang mengutamakan kenyamanan
+        pelanggan, Pelanggan dapat melihat stok, harga, dan status pesanan
+        secara mudah. Dengan layanan cepat dan produk berkualitas, LIVERA
+        menghadirkan pengalaman belanja praktis, efisien, dan terpercaya untuk
+        kebutuhan rumah tangga sehari-hari.
+      </p>
+    </section>
+
+    <section class="section" id="login">
+      <h2>Masuk / Daftar</h2>
+
+      <div class="auth-wrapper">
+        <div class="auth-box">
+          <h3>Silakan login terlebih dahulu</h3>
+
+          <form id="loginForm">
+  <label>Nama pengguna</label>
+  <input type="text" name="username" required />
+
+  <label>Email</label>
+  <input type="email" name="email" required />
+
+  <label>Kata sandi</label>
+  <input type="password" name="password" required />
+
+  <input type="hidden" name="entity" id="entity" />
+
+  <div class="remember">
+    <input type="checkbox" /> <span>Ingatkan saya</span>
+  </div>
+
+  <button type="submit">Login</button>
+</form>
+
+          </form>
+
+          <div class="auth-links">
+            <p>
+              Belum punya akun?
+              <a href="daftar.html">Daftar Sebagai Pelanggan</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p><strong>Alamat:</strong> Jl. Harmoni No.10</p>
+      <p><strong>Contact:</strong> 0812-3456-7890</p>
+    </footer>
+
+    <script>
+      const customSelect = document.querySelector(".custom-select");
+      const selected = customSelect.querySelector(".selected");
+      const options = customSelect.querySelector(".options");
+      const hiddenInput = document.getElementById("entity");
+
+      selected.onclick = () => {
+        options.style.display =
+          options.style.display === "block" ? "none" : "block";
+      };
+
+      options.querySelectorAll("div").forEach((o) => {
+        o.onclick = () => {
+          selected.textContent = o.textContent;
+          hiddenInput.value = o.dataset.value;
+          options.style.display = "none";
+        };
+      });
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: #f7f3ee; /* cream */
+        color: #3b3b3b;
+      }
+      a {
+        text-decoration: none;
+      }
+
+      /* ===== NAVBAR ===== */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 60px;
+        background: #faf6f0;
+        border-bottom: 1px solid #e6ded3;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #8b5e3c;
+      }
+
+      .logo img {
+        height: 65px; /* atur tinggi logo */
+        width: auto;
+        display: block;
+      }
+
+      .logo span {
+        font-size: 26px;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 30px;
+      }
+      .nav-menu a {
+        color: #8b5e3c;
+        font-weight: 500;
+      }
+
+      /* ===== HERO SLIDER (FIXED) ===== */
+      .hero {
+        position: relative;
+        height: 420px;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        animation: slider 15s infinite linear;
+        filter: brightness(0.6);
+      }
+
+      /* 🔧 FIX: TAMBAH 100% */
+      @keyframes slider {
+        0% {
+          background-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c");
+        }
+        33% {
+          background-image: url("https://images.unsplash.com/photo-1615874959474-d609969a20ed");
+        }
+        66% {
+          background-image: url("https://images.unsplash.com/photo-1586023492125-27b2c045efd7");
+        }
+        100% {
+          background-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c");
+        }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+      }
+
+      .hero-content h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+      }
+
+      .hero-content p {
+        font-size: 16px;
+        opacity: 0.9; /* sebelumnya 0.15 terlalu pucat */
+      }
+
+      /* ===== SECTION ===== */
+      .section {
+        max-width: 1000px;
+        margin: 80px auto;
+        padding: 0 40px;
+      }
+
+      .section h2 {
+        font-size: 26px;
+        color: #8b5e3c;
+      }
+
+      .section p {
+        line-height: 1.7;
+        color: #555;
+      }
+
+      /* ===== LOGIN / DAFTAR ===== */
+      .auth-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+
+      .auth-box {
+        background: #f3ede4;
+        width: 380px;
+        padding: 30px;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(237, 153, 30, 0.35);
+      }
+
+      .auth-box h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 22px;
+        color: #8b5e3c;
+      }
+
+      .auth-box label {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .auth-box input,
+      .auth-box select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 15px;
+        border-radius: 8px;
+        border: 1px solid #b4631cff;
+      }
+
+      .remember {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        width: 100%;
+        margin: 10px 0 20px;
+
+        padding-left: 14px;
+      }
+
+      .remember input[type="checkbox"] {
+        margin: 0;
+      }
+
+      .remember label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      .auth-box button {
+        width: 100%;
+        padding: 11px;
+        background: #c27a3a; /* coklat oren */
+        border: none;
+        color: white;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .auth-box button:hover {
+        background: #a8642f;
+      }
+
+      .auth-links {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 13px;
+      }
+
+      .auth-links a {
+        color: #8b5e3c;
+        font-weight: 500;
+      }
+
+      .auth-links a:hover {
+        color: #a8642f;
+        text-decoration: underline;
+      }
+
+      .auth-box input:focus,
+      .auth-box select:focus {
+        outline: none;
+        border-color: #c27a3a;
+        box-shadow: 0 0 0 2px rgba(194, 122, 58, 0.25);
+      }
+
+      input[type="checkbox"] {
+        accent-color: #c27a3a;
+      }
+      /* ===== CUSTOM SELECT ===== */
+      .custom-select {
+        position: relative;
+        width: 100%;
+        margin-bottom: 15px;
+        user-select: none;
+      }
+
+      .selected {
+        padding: 10px; /* SAMA */
+        border: 1px solid #b4631cff; /* SAMA */
+        border-radius: 8px; /* SAMA */
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 15px;
+      }
+
+      .selected:focus,
+      .custom-select:focus-within .selected {
+        border-color: #c27a3a;
+        box-shadow: 0 0 0 2px rgba(194, 122, 58, 0.25);
+      }
+
+      .selected::after {
+        content: "▾";
+        float: right;
+        color: #8b5e3c;
+      }
+
+      .options {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #ffffff;
+        border: 2px solid #c27a3a;
+        border-radius: 12px;
+        margin-top: 6px;
+        overflow: hidden;
+        z-index: 100;
+      }
+
+      .options div {
+        padding: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .options div:hover {
+        background: #c27a3a;
+        color: #ffffff;
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: #a17a3fff;
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 18px 25px;
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    </style>
+    <script>
+/* ===============================
+   LOGIN VALIDASI FINAL (AMAN)
+   =============================== */
+
+const USER_DB_KEY = "livera_users";
+const LOGIN_KEY   = "livera_user";
+
+// ambil database akun
+function getUsers() {
+  return JSON.parse(localStorage.getItem(USER_DB_KEY)) || [];
+}
+
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const username = this.username.value.trim();
+  const email    = this.email.value.trim();
+  const password = this.password.value;
+
+  if (!username || !email || !password) {
+    alert("Semua data wajib diisi!");
+    return;
+  }
+
+  const users = getUsers();
+  const user = users.find(u => u.email === email);
+
+  // ❌ email belum terdaftar
+  if (!user) {
+    alert("Email belum terdaftar. Silakan daftar terlebih dahulu.");
+    return;
+  }
+
+  // ❌ password salah
+  if (user.password !== password) {
+    alert("Password salah!");
+    return;
+  }
+
+  // ✅ login berhasil
+  localStorage.setItem(LOGIN_KEY, JSON.stringify({
+    nama: user.nama,
+    email: user.email,
+    member: user.member
+  }));
+
+  localStorage.setItem("login", "true");
+
+  window.location.href = "pelanggan.html";
+});
+
+// auto redirect jika sudah login
+if (localStorage.getItem("login") === "true") {
+  window.location.href = "pelanggan.html";
+}
+</script>
+
+  </body>
+</html>

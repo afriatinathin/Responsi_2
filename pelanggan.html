@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LIVERA | Sistem Informasi Manajemen</title>
+
+    <style>
+      :root {
+        --primary: #c07a3a;
+        --bg: #faf7f3;
+        --card: #ffffff;
+        --muted: #777;
+        --line: #ece6dd;
+        --shadow: 0 18px 40px rgba(15, 12, 8, 0.08);
+        --radius: 22px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: #1f1f1f;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ====== LAYOUT WRAP ====== */
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 18px;
+      }
+
+      /* ====== NAVBAR ====== */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+      .navbar {
+        display: grid;
+        grid-template-columns: 240px 1fr 240px;
+        align-items: center;
+        gap: 16px;
+        padding: 14px 0;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: 0.3px;
+      }
+      .logo-img {
+        width: 100px;
+        height: 70px;
+        object-fit: contain;
+      }
+      .searchbar {
+        display: flex;
+        justify-content: center;
+      }
+      .searchbox {
+        width: min(720px, 100%);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px;
+        background: #fff;
+      }
+      .searchbox input {
+        flex: 1;
+        border: none;
+        outline: none;
+        padding: 10px 14px;
+        font-size: 14px;
+      }
+      .searchbox button {
+        border: none;
+        cursor: pointer;
+        background: var(--primary);
+        color: #fff;
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+      }
+      .icons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        align-items: center;
+      }
+      .iconbtn {
+        position: relative;
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 16px;
+        padding: 10px 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        user-select: none;
+      }
+      .iconbtn .badge {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        background: var(--primary);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+      }
+
+      /* ====== CATEGORY PILLS ====== */
+      .pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 12px 0;
+      }
+      .pill {
+        border: 1px solid var(--line);
+        background: #fff;
+        padding: 9px 14px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .pill.active {
+        background: #f3e6d8;
+        color: var(--primary);
+        border-color: #efd7c2;
+        font-weight: 800;
+      }
+
+      /* ====== HERO SLIDER ====== */
+      .hero {
+        margin: 16px auto 18px;
+        border-radius: 48px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      .heroSlide {
+        display: none;
+        position: relative;
+      }
+      .heroSlide img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .heroOverlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0.55),
+          rgba(0, 0, 0, 0)
+        );
+        display: flex;
+        align-items: flex-end;
+        padding: 18px 26px;
+      }
+
+      .heroOverlay .box {
+        color: #fff;
+        max-width: 520px;
+      }
+      .heroOverlay h1 {
+        margin: 0 0 8px;
+        font-size: 42px;
+        line-height: 1.05;
+      }
+      .heroOverlay p {
+        margin: 0;
+        color: #f2f2f2;
+        line-height: 1.5;
+      }
+      .heroDots {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        display: flex;
+        gap: 8px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.65);
+        background: transparent;
+        cursor: pointer;
+      }
+      .dot.active {
+        background: #fff;
+      }
+
+      /* ====== PRODUCT GRID ====== */
+      .sectionTitle {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        margin: 18px 0 14px;
+      }
+      .sectionTitle h2 {
+        margin: 0;
+        font-size: 26px;
+      }
+      .sectionTitle .meta {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 28px;
+        padding-bottom: 32px;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 12px 26px rgba(0, 0, 0, 0.06);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.1);
+      }
+      .card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        display: block;
+      }
+      .card .info {
+        padding: 16px 16px 18px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .name {
+        font-weight: 700;
+        font-size: 14px;
+        margin: 2px 0 4px;
+      }
+      .price {
+        font-weight: 800;
+        font-size: 14px;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 6px;
+        margin-bottom: 12px;
+      }
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+      }
+      .star {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        background: #f5d47a;
+        display: inline-grid;
+        place-items: center;
+        font-size: 12px;
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: auto;
+        margin-bottom: 10px;
+      }
+
+      .btn {
+        flex: 1;
+        border: none;
+        cursor: pointer;
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .btn.gray {
+        background: #efefef;
+      }
+      .btn.primary {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      /* ====== OVERLAY + DRAWERS ====== */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        display: none;
+        z-index: 80;
+      }
+      .overlay.show {
+        display: block;
+      }
+
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: -420px;
+        width: min(420px, 92vw);
+        height: 100%;
+        background: #fff;
+        z-index: 90;
+        box-shadow: -12px 0 40px rgba(0, 0, 0, 0.18);
+        transition: right 0.22s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .drawer.active {
+        right: 0;
+      }
+
+      .drawerHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 18px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      .drawerHeader h3 {
+        margin: 0;
+        font-size: 20px;
+      }
+      .xbtn {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .drawerBody {
+        padding: 16px 18px;
+        overflow: auto;
+        flex: 1;
+      }
+      .drawerFooter {
+        border-top: 1px solid var(--line);
+        padding: 14px 18px;
+        background: #fff;
+      }
+      .cartEmpty {
+        color: var(--muted);
+        margin-top: 10px;
+        font-size: 16px;
+      }
+      .totalRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 900;
+        font-size: 18px;
+        margin-bottom: 12px;
+      }
+      .footerBtns {
+        display: flex;
+        gap: 12px;
+      }
+      .footerBtns button {
+        flex: 1;
+        width: 100%;
+        text-align: center;
+      }
+
+      .cartItem {
+        display: grid;
+        grid-template-columns: 64px 1fr auto;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #f2eee8;
+      }
+      .cartItem img {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        object-fit: cover;
+      }
+      .cartItem .title {
+        font-weight: 900;
+        margin: 0 0 4px;
+      }
+      .cartItem .sub {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .qty {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .qbtn {
+        width: 32px;
+        height: 32px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: #fff;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+      }
+      .remove {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: #b3572c;
+        font-weight: 900;
+      }
+
+      /* ====== ME PANEL CARDS ====== */
+      .meCard {
+        background: #f5f5f5;
+        border-radius: 18px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+      .meCard h4 {
+        margin: 0 0 8px;
+      }
+      .meCard p {
+        margin: 4px 0;
+        color: #555;
+      }
+      .meActions {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .meActions .btn {
+        padding: 12px;
+      }
+
+      /* ====== SETTINGS TABS ====== */
+      .tabs {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin: 10px 0 6px;
+      }
+      .tab {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: #fff;
+        cursor: pointer;
+        font-weight: 800;
+      }
+      .tab.active {
+        background: #f3e6d8;
+        color: var(--primary);
+        border-color: #efd7c2;
+      }
+      .note {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      /* ====== TOAST ====== */
+      .toast {
+        position: fixed;
+        left: 50%;
+        top: 16px;
+        transform: translateX(-50%);
+        background: #111;
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 14px;
+        display: none;
+        z-index: 100;
+      }
+
+      /* ====== FOOTER ====== */
+      footer {
+        margin-top: 20px;
+        background: #111;
+        color: #fff;
+      }
+      .footerGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 34px 0;
+      }
+      .footerGrid b {
+        font-size: 18px;
+      }
+      .footerGrid p {
+        margin: 8px 0;
+        color: #d7d7d7;
+      }
+
+      /* ====== RESPONSIVE ====== */
+      @media (max-width: 860px) {
+        .navbar {
+          grid-template-columns: 200px 1fr 1fr;
+        }
+        .icons {
+          gap: 8px;
+        }
+        .heroOverlay h1 {
+          font-size: 34px;
+        }
+      }
+      @media (max-width: 640px) {
+        .navbar {
+          grid-template-columns: 1fr;
+        }
+        .brand {
+          justify-content: space-between;
+        }
+        .searchbar {
+          justify-content: flex-start;
+        }
+        .icons {
+          justify-content: flex-start;
+        }
+        .hero img {
+          height: 320px;
+        }
+        .footerGrid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="toast" class="toast"></div>
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div class="wrap">
+        <div class="navbar">
+          <div class="brand">
+            <img src="logo_LIVERA.png" alt="Logo LIVERA" class="logo-img" />
+            <span class="logo-dot"></span>
+          </div>
+
+          <div class="searchbar">
+            <div class="searchbox">
+              <input
+                id="q"
+                placeholder="Cari produk perabot..."
+                autocomplete="off"
+              />
+              <button id="btnSearch" type="button">Search</button>
+            </div>
+          </div>
+
+          <div class="icons">
+            <div
+              class="iconbtn"
+              id="btnCart"
+              role="button"
+              aria-label="Keranjang"
+              onclick="openDrawer('cart')"
+            >
+              🛒
+              <!-- badge akan diisi JS -->
+            </div>
+            <div
+              class="iconbtn"
+              id="btnMe"
+              role="button"
+              aria-label="Saya"
+              onclick="openDrawer('me')"
+            >
+              👤
+            </div>
+          </div>
+        </div>
+
+        <!-- PILLS (dibuat via JS dari data.js agar sama persis) -->
+        <div class="pills" id="pills"></div>
+      </div>
+    </div>
+
+    <!-- HERO SLIDER -->
+    <div class="wrap">
+      <div class="hero" id="hero">
+        <div class="heroSlide">
+          <img
+            src="https://media.istockphoto.com/id/502857637/id/foto/ruang-tamu-yang-cerah-dengan-nada-gading-ringan.jpg?s=612x612&w=0&k=20&c=xluDnnFH2OFj5DKchY07HUlUsZTCutFmIQdIwBZwD8g="
+            alt="Promo 1"
+          />
+          <div class="heroOverlay">
+            <div class="box">
+              <h1>Home Living<br />Nyaman untuk Keluarga</h1>
+              <p>
+                Produk terlaris & promo mingguan. Pilih per kategori, tambah ke
+                keranjang, dan simulasi checkout.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroSlide">
+          <img
+            src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=70"
+            alt="Promo 2"
+          />
+          <div class="heroOverlay">
+            <div class="box">
+              <h1>Promo Sofa<br />Ruang Keluarga</h1>
+              <p>
+                Diskon spesial untuk koleksi sofa pilihan. Klik beli sekarang
+                atau tambah ke keranjang.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroSlide">
+          <img
+            src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1200&q=70"
+            alt="Promo 3"
+          />
+          <div class="heroOverlay">
+            <div class="box">
+              <h1>Karpet Favorit<br />Biar Makin Cozy</h1>
+              <p>Cari “karpet” di kolom search untuk melihat produk terkait.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroDots" id="heroDots"></div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="sectionTitle">
+        <h2 id="title">Produk</h2>
+      </div>
+
+      <!-- GRID: dibuat via JS dari data.js supaya tampilan sama persis -->
+      <div class="grid" id="grid"></div>
+
+      <div
+        id="emptyState"
+        style="display: none; color: var(--muted); padding: 16px 0 26px"
+      >
+        Produk tidak ditemukan. Coba ganti kategori atau kata kunci.
+      </div>
+    </div>
+
+    <!-- OVERLAY -->
+    <div id="overlay" class="overlay" onclick="closeAll()"></div>
+
+    <!-- DRAWER: CART -->
+    <div id="drawerCart" class="drawer" aria-hidden="true">
+      <div class="drawerHeader">
+        <h3>Keranjang Belanja</h3>
+        <button class="xbtn" aria-label="Close" onclick="closeAll()">✕</button>
+      </div>
+
+      <div class="drawerBody">
+        <!-- diisi renderCart() -->
+      </div>
+
+      <div class="drawerFooter">
+        <div class="totalRow">
+          <div>Total</div>
+          <div>Rp 0</div>
+        </div>
+        <div class="footerBtns">
+          <button class="btn gray" type="button" onclick="clearCart()">
+            Clear
+          </button>
+          <button class="btn primary" type="button" id="btnCheckoutPay">
+            Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRAWER: ME -->
+    <div id="drawerMe" class="drawer" aria-hidden="true">
+      <div class="drawerHeader">
+        <h3>Bagian Saya</h3>
+        <button class="xbtn" aria-label="Close" onclick="closeAll()">✕</button>
+      </div>
+
+      <div class="drawerBody">
+        <div class="meCard">
+          <h4>Informasi Akun</h4>
+          <p>Nama: <b id="meName">-</b></p>
+          <p>Email: <b id="meEmail">-</b></p>
+          <p>Status: <b id="meMember">-</b></p>
+        </div>
+
+        <div class="meActions">
+          <button
+            class="btn gray"
+            type="button"
+            onclick="showToast('Edit Profil (simulasi)')"
+          >
+            Edit Profil
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRAWER: REVIEW -->
+    <div id="drawerReview" class="drawer" aria-hidden="true">
+      <div class="drawerHeader">
+        <h3 id="reviewTitle">Ulasan Produk</h3>
+        <button class="xbtn" aria-label="Close" onclick="closeAll()">✕</button>
+      </div>
+      <div class="drawerBody" id="reviewBody"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="wrap">
+        <div class="footerGrid">
+          <div>
+            <b>Contact & Address</b>
+            <p>LIVERA Home Living</p>
+            <p>Jl. Contoh No. 123, Yogyakarta</p>
+            <p>CS: 08xx-xxxx-xxxx</p>
+          </div>
+          <div>
+            <b>Social</b>
+            <p>Instagram · TikTok · Twitter</p>
+            <p>Promo mingguan & koleksi terbaru</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LOAD DATA + APP -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+
+    <!-- EXTRA LOGIC (RENDER UI DARI DATA) + REVIEW + SETTINGS TAB + CHECKOUT/PAY BUTTON -->
+    <script>
+      // 1) Render kategori
+      (function renderPills() {
+        const pillsEl = document.getElementById("pills");
+        Object.keys(categories).forEach((key) => {
+          const btn = document.createElement("button");
+          btn.className = "pill" + (key === "All" ? " active" : "");
+          btn.dataset.cat = key;
+          btn.textContent = categories[key];
+          pillsEl.appendChild(btn);
+        });
+      })();
+
+      // 2) Render produk (FIXED)
+      document.addEventListener("DOMContentLoaded", function () {
+        // pastikan data ada
+        if (typeof products === "undefined") {
+          console.error(
+            "products belum ter-load. Pastikan data.js dipanggil dulu."
+          );
+          return;
+        }
+
+        const grid = document.getElementById("grid");
+        if (!grid) {
+          console.error("Elemen #grid tidak ditemukan");
+          return;
+        }
+
+        products.forEach((p) => {
+          const card = document.createElement("div");
+          card.className = "card product";
+          card.dataset.cat = p.category;
+          card.dataset.name = p.name.toLowerCase();
+
+          card.innerHTML = `
+      <img src="${p.img}" alt="${p.name}">
+      <div class="info">
+        <div class="name">${p.name}</div>
+        <div class="row">
+          <div class="price">${rupiah(p.price)}</div>
+          <div class="rating">
+            <span class="star">★</span> ${p.rating}
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn gray" type="button" onclick="addToCart(${p.id})">
+            + Keranjang
+          </button>
+          <button class="btn primary" type="button" onclick="buyNow(${p.id})">
+            Beli
+          </button>
+        </div>
+      </div>
+    `;
+
+          grid.appendChild(card);
+        });
+
+        // OPTIONAL: panggil filter setelah render
+        if (typeof applyFilters === "function") {
+          applyFilters();
+        }
+      });
+    </script>
+    <script>
+      /* ===============================
+   FILTER PRODUK BY KATEGORI
+   =============================== */
+      function applyFilters() {
+        const active = document.querySelector(".pill.active");
+        const keyword = document.getElementById("q")?.value.toLowerCase() || "";
+
+        document.querySelectorAll(".card.product").forEach((card) => {
+          const matchCat =
+            !active ||
+            active.dataset.cat === "All" ||
+            card.dataset.cat === active.dataset.cat;
+
+          const matchText = !keyword || card.dataset.name.includes(keyword);
+
+          card.style.display = matchCat && matchText ? "" : "none";
+        });
+
+        const visible = [...document.querySelectorAll(".card.product")].some(
+          (c) => c.style.display !== "none"
+        );
+
+        document.getElementById("emptyState").style.display = visible
+          ? "none"
+          : "block";
+      }
+
+      /* EVENT PILLS */
+      document.getElementById("pills").addEventListener("click", (e) => {
+        const btn = e.target.closest(".pill");
+        if (!btn) return;
+
+        document
+          .querySelectorAll(".pill")
+          .forEach((p) => p.classList.remove("active"));
+        btn.classList.add("active");
+        applyFilters();
+      });
+
+      /* EVENT SEARCH */
+      document
+        .getElementById("btnSearch")
+        ?.addEventListener("click", applyFilters);
+      document.getElementById("q")?.addEventListener("input", applyFilters);
+    </script>
+
+    <script>
+      /* ===============================
+   SETTINGS TABS (FIXED)
+   =============================== */
+      (function settingsTabs() {
+        const tabs = document.getElementById("tabs");
+        const tabContent = document.getElementById("tabContent");
+
+        if (!tabs || !tabContent) return;
+
+        tabs.addEventListener("click", (e) => {
+          const t = e.target.closest(".tab");
+          if (!t) return;
+
+          tabs
+            .querySelectorAll(".tab")
+            .forEach((x) => x.classList.remove("active"));
+          t.classList.add("active");
+
+          const key = t.dataset.tab;
+
+          if (key === "mode") {
+            tabContent.textContent =
+              "Mode tampilan: Light (default). (Simulasi UI)";
+          }
+
+          if (key === "alamat") {
+            tabContent.textContent =
+              "Alamat pengiriman tersimpan: Jl. Contoh No. 123, Yogyakarta. (Simulasi)";
+          }
+
+          if (key === "bayar") {
+            tabContent.textContent =
+              "Metode pembayaran: Transfer / E-Wallet / COD. (Simulasi)";
+          }
+        });
+      })();
+
+      /* ===============================
+   CHECKOUT / PAY BUTTON (SAFE)
+   =============================== */
+      function syncCheckoutPayButton() {
+        const btn = document.getElementById("btnCheckoutPay");
+        if (!btn) return;
+
+        btn.textContent = "Checkout";
+        btn.onclick = () => checkout();
+      }
+
+      /* ===============================
+   INIT SAFE
+   =============================== */
+      document.addEventListener("DOMContentLoaded", () => {
+        if (typeof renderCart === "function") renderCart();
+        if (typeof renderMe === "function") renderMe();
+        syncCheckoutPayButton();
+      });
+    </script>
+    <script>
+      /* ===============================
+   CHECKOUT BUTTON FIX
+   =============================== */
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.getElementById("btnCheckoutPay");
+        if (!btn) return;
+
+        btn.onclick = () => {
+          if (typeof checkout !== "function") {
+            alert("Fungsi checkout belum tersedia");
+            return;
+          }
+          checkout();
+        };
+      });
+    </script>
+  </body>
+</html>

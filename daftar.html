@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Daftar Akun | LIVERA</title>
+
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #f7f3ee, #e9dfd3);
+        min-height: 100vh;
+      }
+
+      .box {
+        width: 360px;
+        margin: 80px auto;
+        background: #f3ede4;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        animation: fadeSlide 0.6s ease;
+      }
+
+      @keyframes fadeSlide {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #5a3a1b;
+      }
+
+      input,
+      button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+      }
+
+      input {
+        transition: all 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #c27a3a;
+        box-shadow: 0 0 0 3px rgba(194, 122, 58, 0.2);
+        background: #fff;
+      }
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      .toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 13px;
+        color: #a8642f;
+      }
+
+      button {
+        background: linear-gradient(135deg, #c27a3a, #a8642f);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      button:active {
+        transform: scale(0.97);
+      }
+
+      button.loading {
+        opacity: 0.7;
+        pointer-events: none;
+      }
+
+      #error {
+        color: #b00020;
+        background: #ffe3e3;
+        padding: 8px;
+        border-radius: 6px;
+        font-size: 13px;
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      a {
+        color: #a8642f;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <h3>Daftar Akun</h3>
+
+      <form id="registerForm">
+        <input type="text" id="username" placeholder="Username" required />
+        <input type="email" id="email" placeholder="Email" required />
+
+        <div class="password-wrapper">
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+          />
+          <span class="toggle" onclick="togglePassword()">👁</span>
+        </div>
+
+        <button type="submit" id="btn">Daftar</button>
+
+        <p id="error"></p>
+      </form>
+
+      <p style="text-align: center">
+        <a href="index.html">← Kembali ke Login</a>
+      </p>
+    </div>
+
+    <script>
+      /* ===============================
+   DAFTAR AKUN (SIMPAN KE DATABASE)
+   =============================== */
+
+      const USER_DB_KEY = "livera_users";
+
+      function getUsers() {
+        return JSON.parse(localStorage.getItem(USER_DB_KEY)) || [];
+      }
+
+      function saveUsers(users) {
+        localStorage.setItem(USER_DB_KEY, JSON.stringify(users));
+      }
+
+      const form = document.getElementById("registerForm");
+      const btn = document.getElementById("btn");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        if (!username || !email || !password) {
+          showError("Semua data wajib diisi.");
+          return;
+        }
+
+        let users = getUsers();
+
+        // ❌ CEK EMAIL SUDAH TERDAFTAR
+        if (users.find((u) => u.email === email)) {
+          showError("Email sudah terdaftar. Silakan login.");
+          return;
+        }
+
+        // ✅ SIMPAN AKUN BARU
+        users.push({
+          nama: username,
+          email: email,
+          password: password,
+          member: "Silver Member",
+        });
+
+        saveUsers(users);
+
+        btn.textContent = "Berhasil!";
+        btn.classList.add("loading");
+
+        setTimeout(() => {
+          alert("Pendaftaran berhasil. Silakan login.");
+          window.location.href = "index.html";
+        }, 800);
+      });
+
+      function showError(msg) {
+        const err = document.getElementById("error");
+        err.style.display = "block";
+        err.textContent = msg;
+      }
+
+      function togglePassword() {
+        const pass = document.getElementById("password");
+        pass.type = pass.type === "password" ? "text" : "password";
+      }
+    </script>
+  </body>
+</html>
